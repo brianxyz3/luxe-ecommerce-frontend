@@ -31,7 +31,7 @@ jobs:
 
       - name: Upload to S3
         run: |
-          aws s3 sync dist/* s3://luxe-ecommerce-frontend --delete
+          aws s3 sync dist/ s3://luxe-ecommerce-frontend --delete
         working-directory: frontend/
 
       - name: Check if index.html changed
