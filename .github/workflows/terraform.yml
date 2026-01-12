@@ -33,26 +33,26 @@ jobs:
           aws s3 sync dist/ s3://luxe-ecommerce-frontend --delete
         working-directory: frontend/
 
-      - name: Check if index.html changed
-        id: index_change_check
-        run: |
-          if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q "dist/index.html"; then
-            echo "changed=true" >> $GITHUB_OUTPUT
-          else
-            echo "changed=false" >> $GITHUB_OUTPUT
-          fi
-        working-directory: frontend/
+      # - name: Check if index.html changed
+      #   id: index_change_check
+      #   run: |
+      #     if git diff --name-only ${{ github.event.before }} ${{ github.sha }} | grep -q "dist/index.html"; then
+      #       echo "changed=true" >> $GITHUB_OUTPUT
+      #     else
+      #       echo "changed=false" >> $GITHUB_OUTPUT
+      #     fi
+      #   working-directory: frontend/
           
-      - name: Get CloudFront Distribution ID
-        if: steps.index_change_check.outputs.changed == 'true'
-        run: |
-          echo "DISTRIBUTION_ID=$(aws ssm get-parameter \
-            --name "/luxe-ecommerce/prod/cloudfront/cdn_id" \
-            --query Parameter.Value \
-            --output text)" >> $GITHUB_ENV
+      # - name: Get CloudFront Distribution ID
+      #   if: steps.index_change_check.outputs.changed == 'true'
+      #   run: |
+      #     echo "DISTRIBUTION_ID=$(aws ssm get-parameter \
+      #       --name "/luxe-ecommerce/prod/cloudfront/cdn_id" \
+      #       --query Parameter.Value \
+      #       --output text)" >> $GITHUB_ENV
 
-      - name: Invalidate CloudFront
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id $DISTRIBUTION_ID \
-            --paths "/index.html"
+      # - name: Invalidate CloudFront
+      #   run: |
+      #     aws cloudfront create-invalidation \
+      #       --distribution-id $DISTRIBUTION_ID \
+      #       --paths "/index.html"
