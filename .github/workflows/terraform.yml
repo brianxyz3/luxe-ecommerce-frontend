@@ -22,7 +22,6 @@ jobs:
           role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-
       - name: Build frontend
         run: |
           npm ci
@@ -44,3 +43,16 @@ jobs:
           fi
         working-directory: frontend/
           
+      - name: Get CloudFront Distribution ID
+        if: steps.index_change_check.outputs.changed == 'true'
+        run: |
+          echo "DISTRIBUTION_ID=$(aws ssm get-parameter \
+            --name "/luxe-ecommerce/prod/cloudfront/cdn_id" \
+            --query Parameter.Value \
+            --output text)" >> $GITHUB_ENV
+
+      - name: Invalidate CloudFront
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id $DISTRIBUTION_ID \
+            --paths "/index.html"

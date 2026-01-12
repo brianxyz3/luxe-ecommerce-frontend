@@ -18,5 +18,5 @@ createRoot(document.getElementById('root')!).render(
         </CartProvider>
       </AdminDashboardProvider>
     </AuthProvider>
-  </StrictMode>,
+  </StrictMode>
 )
