@@ -10,7 +10,7 @@ export default defineConfig({
     port: 3000,
     proxy: {
       "/api": {
-        target: "http://localhost:3000/api",
+        target: "http://luxe-ecommerce-alb-274995169.eu-west-1.elb.amazonaws.com/api",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ""),
       }
