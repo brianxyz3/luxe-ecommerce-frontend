@@ -3,7 +3,7 @@ name: Frontend Deploy
 on:
   push:
     branches: [ "main" ]
-    paths-ignore: [ "*.md", "frontend/.gitignore", ".github/*" ]
+    paths-ignore: [ "*.md", "frontend/.gitignore", ".github/**" ]
 
 permissions:
   id-token: write
